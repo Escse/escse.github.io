@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Hao" />
+
+
+
+<meta name="description" content="降维方法小结">
+<meta name="keywords" content="Dimensionality Reduction">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Brief Summary of Dimensionality Reduction">
+<meta property="og:url" content="http://escse.github.io/2016/05/11/A-Brief-Summary-of-Dimensionality-Reduction/index.html">
+<meta property="og:site_name" content="Hao&#39;s Blog">
+<meta property="og:description" content="降维方法小结">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://images.cnitblog.com/blog/132383/201305/08233243-e9932be22ac04de08e42625e36147835.jpg">
+<meta property="og:image" content="http://my.csdn.net/uploads/201204/29/1335685888_7015.png">
+<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/4.png">
+<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/1.png">
+<meta property="og:image" content="http://my.csdn.net/uploads/201205/18/1337326287_3114.png">
+<meta property="og:image" content="http://www.36dsj.com/wp-content/uploads/2015/03/0099.jpg">
+<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/2.png">
+<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/3.png">
+<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/5.png">
+<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/6.png">
+<meta property="og:updated_time" content="2017-08-27T08:19:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="A Brief Summary of Dimensionality Reduction">
+<meta name="twitter:description" content="降维方法小结">
+<meta name="twitter:image" content="http://images.cnitblog.com/blog/132383/201305/08233243-e9932be22ac04de08e42625e36147835.jpg">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Hao&#39;s Blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>A Brief Summary of Dimensionality Reduction | Hao&#39;s Blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: false
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/icon.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Hao</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dimensionality-Reduction/">Dimensionality Reduction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ME/">ME</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Matrix/">Matrix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optimization/">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Probability/">Probability</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">ZJU</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Hao</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/icon.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Hao</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-A-Brief-Summary-of-Dimensionality-Reduction" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/11/A-Brief-Summary-of-Dimensionality-Reduction/" class="article-date">
+      <time datetime="2016-05-11T07:16:20.000Z" itemprop="datePublished">2016-05-11</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      A Brief Summary of Dimensionality Reduction
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Math/">Math</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dimensionality-Reduction/">Dimensionality Reduction</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="降维方法小结">降维方法小结</h2>
+<a id="more"></a>
+<h3 id="数据降维分类">数据降维分类</h3>
+<p><img src="http://images.cnitblog.com/blog/132383/201305/08233243-e9932be22ac04de08e42625e36147835.jpg" alt="数据降维分类"> <img src="http://my.csdn.net/uploads/201204/29/1335685888_7015.png" alt="此处输入图片的描述"></p>
+<h2 id="传统线性方法">传统线性方法</h2>
+<h3 id="pca">PCA</h3>
+<p>PCA 见前文 ### ICA独立成分分析 PCA 主要针对高斯噪声的数据， ICA 可以不需要知道分布 ICA又称盲源分离(Blind source separation, BSS),它假设观察到的随机信号x服从模型<span class="math inline">\(x=As\)</span>，其中s为未知源信号，其分量相互独立，A为一未知混合矩阵。ICA的目的是通过且仅通过观察x来估计混合矩阵A以及源信号s。<a href="http://www.zhihu.com/question/28845451/answer/42292804?utm_campaign=rss&amp;utm_medium=rss&amp;utm_source=rss&amp;utm_content=title" target="_blank" rel="external">cite</a> eg：经典鸡尾酒宴会问题 <img src="http://o6z0iouhm.bkt.clouddn.com/4.png" alt="ICA"> 调整到zero means <span class="math display">\[x = As \rightarrow \sum_i^na_is_i\]</span> <span class="math display">\[求解：s = A^{-1}x = Wx\]</span> 下面问题在于如何计算W，方法是用极大似然估计 给数据分布做出假设，一般假设sigmoid函数为pdf 假设分量独立，联合分布概率密度$p(s) = _i^n p_s(s_i) $ <span class="math display">\[p(x) = p_s(Wx)|W| = |W|\prod_i^n p_s(w_i^Tx)\]</span> <span class="math display">\[l(W) = \sum_{i=1}^m\sum_{j=1}^nlog(p_s(w_j^Tx^{(i)}+log|W|))\]</span> <img src="http://o6z0iouhm.bkt.clouddn.com/1.png" alt="此处输入图片的描述"> 求导求解 参考资料： <a href="https://www.cs.helsinki.fi/u/ahyvarin/papers/NN00new.pdf" target="_blank" rel="external">参考文献</a> <a href="http://www.cnblogs.com/jerrylead/archive/2011/04/19/2021071.html" target="_blank" rel="external">博客</a></p>
+<h3 id="lda-linear-discriminant-analysis">LDA (Linear discriminant analysis)</h3>
+<p>目标：使用这种方法能够使投影后模式样本的类间散布矩阵最大，并且同时类内散布矩阵最小 <img src="http://my.csdn.net/uploads/201205/18/1337326287_3114.png" alt="此处输入图片的描述"> 两类的均值向量<span class="math inline">\(m_1,m_2\)</span> 最大化类间差距 <span class="math inline">\(d_{12} = m_2 - m_1 = w^T(n_2-n_1)\)</span> 最小化类内方差 <span class="math inline">\(s_k^2 = \sum_{n \in C_k}(y_n-m_k)^2, y_n = w^Tx_n\)</span> 优化目标 $J(w) =  $ 定义类间方差$ S_B = (m_2-m_1)(m_2-m_1)^T $ 类内方差$ S_W = S_{w1} + S_{w2}$ 则目标函数变成： <span class="math display">\[ J(w) = \frac{w^TS_Bw}{w^TS_Ww}\]</span> 方法1：Lagrange法 <span class="math display">\[min: J(w) = w^TS_Bw-\lambda (w^TS_Ww-1)\]</span> <span class="math display">\[求导得 S_Bw = \lambda S_Ww\]</span> <span class="math display">\[J(w) = \lambda\]</span> 而<span class="math inline">\(\lambda\)</span>的最大值即<span class="math inline">\(S_W^{-1}S_B\)</span>的最大特征值，<span class="math inline">\(w\)</span>为对应特征向量</p>
+<p>方法2：坐标变换 <span class="math inline">\(S_W = L^TL,z = Lw\)</span> 则不失一般性<span class="math inline">\(||z||_2 = 1\)</span>, <span class="math inline">\(J(w) = z^TL^{-T}S_WL^{-1}z\)</span> 略</p>
+<h2 id="流形学习">流形学习</h2>
+<p>“天地有正气，杂然赋流形” – 文天祥 资料： <a href="http://www.cad.zju.edu.cn/reports/%C1%F7%D0%CE%D1%A7%CF%B0.pdf" target="_blank" rel="external">何晓飞ppt</a>，<a href="http://blog.pluskid.org/?p=533" target="_blank" rel="external">pluskid博文</a> <img src="http://www.36dsj.com/wp-content/uploads/2015/03/0099.jpg" alt="此处输入图片的描述"></p>
+<h3 id="mds-multiple-dimensional-scaling-多维缩放">MDS (Multiple Dimensional Scaling, 多维缩放)</h3>
+<p>要求原始空间中样本的距离在低维空间得以保持 假定m个样本在原始样本空间<span class="math inline">\(\mathbb{R}^d\)</span>的距离为<span class="math inline">\(D\in \mathbb{R}^{m\times m}\)</span> 要获得低维空间表示<span class="math inline">\(Z = \mathbb{R}^{d&#39;\times m}\)</span> 令低维空间内积矩阵为<span class="math inline">\(B = Z^TZ\in \mathbb{R}^{m\times m}\)</span> 其中<span class="math inline">\(b_{ij}=z_i^Tz_j\)</span>,则<span class="math inline">\(d_{ij}^2=b_{ii}+b_{jj}-2b_{ij}\)</span> 令降维后样本Z中心化，<span class="math inline">\(\sum_{i=0}^mz_i=0\)</span> 经过推导，可得<span class="math inline">\(b_{ij}=-\frac{1}{2}(d_{ij}^2-d_{i\cdot}^2-d_{\cdot j}^2+dist_{\cdot\cdot}^2)\)</span> 即矩阵<span class="math inline">\(B\)</span>可以通过原始数据的距离算出，详见<a href="http://product.dangdang.com/23898620.html" target="_blank" rel="external">西瓜书p228</a> 对<span class="math inline">\(B\)</span>做特征值分解，再选取主成分，可以求得<span class="math inline">\(Z\)</span>，即得到降维的表示</p>
+<h3 id="isomap-等度量映射">Isomap (等度量映射)</h3>
+<p>Isomap 简单讲一下 Isomap 是按照测地线的距离去算两点间的距离，再用MDS降维 <img src="http://o6z0iouhm.bkt.clouddn.com/2.png" alt="此处输入图片的描述"></p>
+<h3 id="llelocally-linear-embedding">LLE（Locally linear embedding）</h3>
+<p><img src="http://o6z0iouhm.bkt.clouddn.com/3.png" alt="此处输入图片的描述"> 与Isomap不同，LLE试图保持邻域内的样本之间的线性关系 <span class="math display">\[x_i \approx \sum_{j=1}^kw_{ij}x_j,k个足够近的点线性表示\]</span> <span class="math display">\[\min_{w} \sum_{i=1}^m||x_i-\sum_{j\in Q_i}w_{ij}x_j||_2^2\\
+s.t. \sum_{j\in Q_i}w_{ij} = 1
+\]</span> 求解<span class="math inline">\(w\)</span>是一个投影问题 求出<span class="math inline">\(w\)</span>后，LLE可以表示为 <span class="math display">\[\min_{z_i}\sum_{i=1}^m||z_i-\sum_{j\in Q_i}w_{ij}z_j||_2^2\]</span> 其中<span class="math inline">\(z_i\)</span>为<span class="math inline">\(x_i\)</span>对应的低维表示 令<span class="math inline">\(Z = (z_1,z_2,\cdots,z_m)\in \mathbb{R}^{d&#39;\times n}, (W)_{ij} = w_{ij}\)</span> 则优化目标可以写成 <span class="math display">\[\min_{Z}tr(ZMZ^T)\\
+s.t. ZZ^T = I\\
+其中 M = (I-W)^T(I-W)
+\]</span> 可以看出该问题即求解M的<span class="math inline">\(d&#39;\)</span>个最小特征值对应的特征向量<span class="math inline">\(z\)</span></p>
+<p>参考资料: <a href="https://www.cs.cmu.edu/~efros/courses/LBMV07/Papers/roweis-science-00.pdf" target="_blank" rel="external">论文</a> 、<a href="https://www.cs.nyu.edu/~roweis/lle/papers/lleintro.pdf" target="_blank" rel="external">tutorial</a></p>
+<h4 id="isomap-与-lle-效果比较">Isomap 与 LLE 效果比较</h4>
+<div class="figure">
+<img src="http://o6z0iouhm.bkt.clouddn.com/5.png" alt="此处输入图片的描述">
+<p class="caption">此处输入图片的描述</p>
+</div>
+<h3 id="le-laplacian-eigenmaps-拉普拉斯特征映射">LE (Laplacian Eigenmaps, 拉普拉斯特征映射)</h3>
+<blockquote>
+<p>Step 1 (constructing the adjacency graph). We put an edge between nodes i and j if xi and xj are “close.” - neibours - knn</p>
+</blockquote>
+<blockquote>
+<p>Step 2 (choosing the weights).1 Here as well, we have two variations for weighting the edges: - Heat kernel <span class="math inline">\(W_{ij} = e^{-||x_i-x_j||^2/t}\)</span>if connected - binary 0/1</p>
+</blockquote>
+<blockquote>
+<p>Step 3 (eigenmaps). Compute eigenvalues and eigenvectors for the generalized eigenvector problem <span class="math inline">\(Lf = \lambda Df\)</span> , where <span class="math inline">\(D_ii = \sum_jW_{ji}, L=D-W\)</span> <span class="math display">\[0 = \lambda_0\le \lambda_1\le\cdots\le\lambda_{k-1},对应解向量f_0,f_1,\cdots,f_{k-1}\]</span> for embedding in m-dimensional Euclidean space: <span class="math display">\[x_i\rightarrow(f_1(i),\cdots,f_m(i))\]</span></p>
+</blockquote>
+<p>算法解释 有了相似度矩阵<span class="math inline">\(W\)</span>后，目标就可以刻画为 <span class="math display">\[l(W) = \sum_{ij}(y_i-y_j)^2W_{ij}\\
+又\sum_{ij}(y_i-y_j)^2W_{ij} = \sum_{ij}(y_i^2+y_j^2-2y_iy_j)W_{ij}\\
+=\sum y_i^2D_{ii}+\sum_jy_j^2D_{jj}-2\sum_{ij}y_iy_jW_{ij}\\
+= 2y^TLy
+\]</span> 则问题转化为<span class="math display">\[\min_y y^TLy, \ \ s.t. y^TDy=1 \]</span> 对于所有<span class="math inline">\(y\)</span>,<span class="math display">\[\min_Y tr(Y^TLY), \ \ s.t. Y^TDY=I\]</span> <img src="http://o6z0iouhm.bkt.clouddn.com/6.png" alt="此处输入图片的描述"> constraint 解释： &gt; The constraint yTDy = 1 removes an arbitrary scaling factor in the embedding. Matrix D provides a natural measure on the vertices of the graph.The bigger the value Dii (corresponding to the ith vertex) is, the more “important” is that vertex.</p>
+<p>puskid 博客上说了一句，还没理解 &gt; 实际上，从理论上也可以得出二者之间的联系, LE 对应于<span class="math inline">\(L\)</span>,而 LLE 对应于 <span class="math inline">\(L^2\)</span></p>
+<p>参考资料: <a href="http://www.cnblogs.com/xbinworld/archive/2012/11/29/2795287.html" target="_blank" rel="external">博客</a> ### LPP (Locality Preserving Projection),局部保留投影.Xiaofei He 2999</p>
+<blockquote>
+<p>It builds a graph incorporating neighborhood information of the data set algorithm： <strong>1. Constructing the adjacency graph</strong>: Let G denote a graph with m nodes. We put an edge between nodes i and j if xi and xj are ”close”. a.Euclidean b.knn <strong>2. Choosing the weights</strong>: W is a sparse symmetric m × m matrix with Wij having the weight of the edge joining vertices i and j, and 0 if there is no such edge. a.Heat kernel b.binary <strong>3. Eigenmaps</strong>: Compute the eigenvectors and eigenvalues for the generalized eigenvector problem:<span class="math display">\[XLX^Ta = \lambda XDX^Ta\]</span> D is a diagonal matrix w, <span class="math inline">\(D_{ii} = \sum_j W_{ji}\)</span> , <span class="math inline">\(L = D-W\)</span> is the laplacian matrix, the ith column of <span class="math inline">\(X\)</span> is <span class="math inline">\(x_i\)</span> <span class="math display">\[x\rightarrow y=A^Tx, A = (a_0,a_1,\cdots,a_{l-1})\]</span></p>
+</blockquote>
+<p>从算法过程来看，LPP与LE极其相似 在 LPP 中，降维函数跟 PCA中一样被定为是一个线性变换，用一个降维矩阵 A 来表示，于是 LE 的目标函数变为 <span class="math display">\[\sum_{i,j}(A^Tx_i-A^Tx_j)^2W_{ij}\]</span> 经过类似的变换以后，得到类似的特向量问题 <span class="math display">\[XLX^Ta = \lambda XDX^Ta\]</span></p>
+<p>参考资料: <a href="http://blog.pluskid.org/?p=290" target="_blank" rel="external">pluskid博客</a> <a href="http://papers.nips.cc/paper/2359-locality-preserving-projections.pdf" target="_blank" rel="external">论文</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2016/05/11/A-Brief-Summary-of-Dimensionality-Reduction/">A Brief Summary of Dimensionality Reduction</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">Hao</a></p>
+        <p><span>Created:</span>2016-05-11, 15:16:20</p>
+        <p><span>Updated:</span>2017-08-27, 16:19:52</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2016/05/11/A-Brief-Summary-of-Dimensionality-Reduction/" title="A Brief Summary of Dimensionality Reduction">http://escse.github.io/2016/05/11/A-Brief-Summary-of-Dimensionality-Reduction/</a>
+            <span class="copy-path" data-clipboard-text="From http://escse.github.io/2016/05/11/A-Brief-Summary-of-Dimensionality-Reduction/　　By Hao" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/06/16/Maximum Entropy/">
+                    Maximum Entropy Model
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/05/04/Quasi-Newton-Method/">
+                    Quasi Newton Method
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#降维方法小结"><span class="toc-number">1.</span> <span class="toc-text">降维方法小结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据降维分类"><span class="toc-number">1.1.</span> <span class="toc-text">数据降维分类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#传统线性方法"><span class="toc-number">2.</span> <span class="toc-text">传统线性方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pca"><span class="toc-number">2.1.</span> <span class="toc-text">PCA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lda-linear-discriminant-analysis"><span class="toc-number">2.2.</span> <span class="toc-text">LDA (Linear discriminant analysis)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#流形学习"><span class="toc-number">3.</span> <span class="toc-text">流形学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mds-multiple-dimensional-scaling-多维缩放"><span class="toc-number">3.1.</span> <span class="toc-text">MDS (Multiple Dimensional Scaling, 多维缩放)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#isomap-等度量映射"><span class="toc-number">3.2.</span> <span class="toc-text">Isomap (等度量映射)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#llelocally-linear-embedding"><span class="toc-number">3.3.</span> <span class="toc-text">LLE（Locally linear embedding）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#isomap-与-lle-效果比较"><span class="toc-number">3.3.1.</span> <span class="toc-text">Isomap 与 LLE 效果比较</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#le-laplacian-eigenmaps-拉普拉斯特征映射"><span class="toc-number">3.4.</span> <span class="toc-text">LE (Laplacian Eigenmaps, 拉普拉斯特征映射)</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"A Brief Summary of Dimensionality Reduction　| Hao's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/06/16/Maximum Entropy/" title="Pre: Maximum Entropy Model">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/05/04/Quasi-Newton-Method/" title="Next: Quasi Newton Method">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/09/01/PRML-EM/">PRML读书笔记(二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/29/PRML-BayesianBasis/">PRML读书笔记(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/16/Maximum Entropy/">Maximum Entropy Model</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/A-Brief-Summary-of-Dimensionality-Reduction/">A Brief Summary of Dimensionality Reduction</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/Quasi-Newton-Method/">Quasi Newton Method</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/27/Mahalanobis-Distance-and-PCA/">PCA and Mahalanobis Distance</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/Eigenfunction-of-A-Random-Variable/">Eigenfunction of A Random Variable</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/Convex Optimization 1/">Convex Optimization</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 Hao
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

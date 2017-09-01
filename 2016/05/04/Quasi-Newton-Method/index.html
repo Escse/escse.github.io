@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Hao" />
+
+
+
+<meta name="description" content="拟牛顿法 记\(p_k = x_{k+1} - x_k, q_k = \nabla f(x_{k+1}) - \nabla f(x_k)\)则 \[q_k \approx \nabla^2f(x_k)p_k\]">
+<meta name="keywords" content="Optimization">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Quasi Newton Method">
+<meta property="og:url" content="http://escse.github.io/2016/05/04/Quasi-Newton-Method/index.html">
+<meta property="og:site_name" content="Hao&#39;s Blog">
+<meta property="og:description" content="拟牛顿法 记\(p_k = x_{k+1} - x_k, q_k = \nabla f(x_{k+1}) - \nabla f(x_k)\)则 \[q_k \approx \nabla^2f(x_k)p_k\]">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2017-08-27T08:19:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Quasi Newton Method">
+<meta name="twitter:description" content="拟牛顿法 记\(p_k = x_{k+1} - x_k, q_k = \nabla f(x_{k+1}) - \nabla f(x_k)\)则 \[q_k \approx \nabla^2f(x_k)p_k\]">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Hao&#39;s Blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Quasi Newton Method | Hao&#39;s Blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: false
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/icon.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Hao</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dimensionality-Reduction/">Dimensionality Reduction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ME/">ME</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Matrix/">Matrix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optimization/">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Probability/">Probability</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">ZJU</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Hao</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/icon.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Hao</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-Quasi-Newton-Method" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/04/Quasi-Newton-Method/" class="article-date">
+      <time datetime="2016-05-04T12:04:20.000Z" itemprop="datePublished">2016-05-04</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Quasi Newton Method
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Math/">Math</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Optimization/">Optimization</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h3 id="拟牛顿法">拟牛顿法</h3>
+<p>记<span class="math inline">\(p_k = x_{k+1} - x_k, q_k = \nabla f(x_{k+1}) - \nabla f(x_k)\)</span>则 <span class="math display">\[q_k \approx \nabla^2f(x_k)p_k\]</span> <a id="more"></a> 令<span class="math inline">\(H_k = \nabla^2f(x_k)_{-1}\)</span>,则 <span class="math display">\[H_kq_k \approx p_k\]</span> 修正 <span class="math display">\[(H_k+D_k)q_k = p_k\]</span> 记<span class="math inline">\(H_{k+1} = H_k+D_k\)</span> ### 秩1修正 <span class="math inline">\(D_k = \alpha_kz_kz_k^T\)</span> 计算过程 <span class="math display">\[z_k = \frac{p_k-H_kq_k}{\alpha_kz_k^Tq_k}\]</span> <span class="math display">\[q_k^T(p_k-H_kq_k) = \alpha_k(z_k^Tq_k)^2\]</span> 代入得 <span class="math display">\[D_k = \frac{(p_k-H_kq_k)(p_k-H_kq_k)^T}{q_k^T(p_k-H_kq_k)}\]</span> <span class="math display">\[H_{k+1} = H_k + \frac{(p_k-H_kq_k)(p_k-H_kq_k)^T}{q_k^T(p_k-H_kq_k)}\]</span> 但是秩1修正不能保证正定，有一定缺陷 ### DFP <span class="math inline">\(D_k = mvv^T + nww^T\)</span> <span class="math display">\[v(mv^Tq_k) + w(nw^Tq_k) = p_k - H_kq_k\]</span> 则<span class="math inline">\(v = p_k, w = H_kq_k, mv^Tq_k = 1, nw^Tq_k = -1\)</span> 得<span class="math display">\[H_{k+1} = H_k + \frac{p_kp_k^T}{p_k^Tq_k}-\frac{H_kq_kq_k^TH_k^T}{q_k^TH_kq_k}\]</span> #### 正定性 归纳法证明<span class="math inline">\(H_k正定\)</span> <span class="math display">\[H_k正定，令H_k = \sum_{i=1}^n\lambda_ie_ie_i^T\]</span> <span class="math display">\[弱化证明H_k - \frac{H_kq_kq_k^TH_k^T}{q_k^TH_kq_k} \ge 0\]</span> <span class="math display">\[x^T(H_k - \frac{H_kq_kq_k^TH_k^T}{q_k^TH_kq_k})x = \sum_{i=1}^n\lambda_i&lt;e_i,x&gt;^2-\frac{(\sum_{i=1}^n\lambda_i&lt;e_i,x&gt;)(\sum_{i=1}^n\lambda_i&lt;e_i,q_k&gt;)}{\sum_{i=1}^n\lambda_i&lt;e_i,q_k&gt;^2}\]</span> 由柯西不等式可知上式成立</p>
+<h3 id="bfgs">BFGS</h3>
+<p>$H_{k+1} = V^TH_kV + p_kp_k^T $ <span class="math inline">\(\rho = \frac{1}{q_k^Ts_k}, V = I-\rho q_kt_k^T\)</span> 另一种方法<span class="math inline">\(B = H^{-1}, q_k = B_{k+1}p_k\)</span> <span class="math display">\[B_{k+1} = B_k + \frac{q_kq_k^T}{q_k^Tp_k}-\frac{B_kp_kp_k^TB_k^T}{p_k^TB_kp_k}\]</span> 根据Sherman-Morrison定理，<span class="math inline">\([A^{-1}+\rho uv^T]^{-1} = A-\frac{\rho}{1+\rho v^TAu}Auv^TA\)</span>,则 <span class="math display">\[H_{k+1} = H_k + (1+\frac{q^TH_kq_k}{p_k^Tq_k})\frac{p_kp_k^T}{p_k^Tq_k}-\frac{p_kq_k^TH_k+H_kq_k^Tp_k}{p_k^Tq^k}\]</span></p>
+<h3 id="broden族">Broden族</h3>
+<p><span class="math display">\[H_{k+1}^\phi = (1-\phi)H_{k+1}^{DFP}+\phi H_{k+1}^{BFGS}\]</span> #### 问题 1 没有证明那个定理 2 没有代入计算过，有点复杂</p>
+<h3 id="l-bfgs">L-BFGS</h3>
+<p>随着迭代，<span class="math inline">\(H_k\)</span> 矩阵会变得越来越稠密，难以存储，L-BFGS只存储最新的k个更新向量来计算<span class="math inline">\(H_{k+1}\)</span></p>
+<h3 id="总结">总结</h3>
+<p>优化方法中一阶的方法有 SGD，Adagrad, Adadelta, RMSPROP, ADAM. 牛顿法是二阶方法，BFGS是目前较好的拟牛顿法，L-BFGS在机器学习中有较大的应用。</p>
+<h3 id="参考资料">参考资料</h3>
+<p>[1] 陈宝林 最优化理论与算法 [2] [网络参考文章](http://blog.csdn.net/acdreamers/article/details/44664941) [3] [Shanno D F. Conditioning of quasi-Newton methods for function minimization[J]. Mathematics of computation, 1970, 24(111): 647-656.MLA](http://www.ams.org/journals/mcom/1970-24-111/S0025-5718-1970-0274029-X/S0025-5718-1970-0274029-X.pdf)</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2016/05/04/Quasi-Newton-Method/">Quasi Newton Method</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">Hao</a></p>
+        <p><span>Created:</span>2016-05-04, 20:04:20</p>
+        <p><span>Updated:</span>2017-08-27, 16:19:52</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2016/05/04/Quasi-Newton-Method/" title="Quasi Newton Method">http://escse.github.io/2016/05/04/Quasi-Newton-Method/</a>
+            <span class="copy-path" data-clipboard-text="From http://escse.github.io/2016/05/04/Quasi-Newton-Method/　　By Hao" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/05/11/A-Brief-Summary-of-Dimensionality-Reduction/">
+                    A Brief Summary of Dimensionality Reduction
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/04/27/Mahalanobis-Distance-and-PCA/">
+                    PCA and Mahalanobis Distance
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#拟牛顿法"><span class="toc-number">1.</span> <span class="toc-text">拟牛顿法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bfgs"><span class="toc-number">2.</span> <span class="toc-text">BFGS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#broden族"><span class="toc-number">3.</span> <span class="toc-text">Broden族</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#l-bfgs"><span class="toc-number">4.</span> <span class="toc-text">L-BFGS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考资料"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Quasi Newton Method　| Hao's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/05/11/A-Brief-Summary-of-Dimensionality-Reduction/" title="Pre: A Brief Summary of Dimensionality Reduction">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/04/27/Mahalanobis-Distance-and-PCA/" title="Next: PCA and Mahalanobis Distance">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/09/01/PRML-EM/">PRML读书笔记(二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/29/PRML-BayesianBasis/">PRML读书笔记(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/16/Maximum Entropy/">Maximum Entropy Model</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/A-Brief-Summary-of-Dimensionality-Reduction/">A Brief Summary of Dimensionality Reduction</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/Quasi-Newton-Method/">Quasi Newton Method</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/27/Mahalanobis-Distance-and-PCA/">PCA and Mahalanobis Distance</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/Eigenfunction-of-A-Random-Variable/">Eigenfunction of A Random Variable</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/Convex Optimization 1/">Convex Optimization</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 Hao
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
