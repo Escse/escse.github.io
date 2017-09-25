@@ -15,31 +15,20 @@
 
 
 
-<meta name="description" content="Chapter 9 混合模型和EM 第九章的前面几节介绍了k-means, k-medoids, 混合高斯模型(GMM)等算法，并以GMM为例子介绍了EM算法 本节主要记录EM算法的理解">
-<meta name="keywords" content="PRML">
+<meta name="description" content="拉格朗日对偶与KKT条件 优化问题 \[ \begin{align} \text{minimize }&amp;amp; f_0(x) \\ \text{subject to }&amp;amp;f_i(x) \le 0, i=1:m\\ &amp;amp; h_i(x) = 0, i=1:p \end{align}\\ D_{f} = \bigcap_{i=0}^m\text{dom}f_i\cap \bigcap_{">
+<meta name="keywords" content="Optimization">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PRML读书笔记(二)">
-<meta property="og:url" content="http://escse.github.io/2017/09/01/PRML-EM/index.html">
+<meta property="og:title" content="凸优化系列 (二)">
+<meta property="og:url" content="http://escse.github.io/2017/09/25/拉格朗日与KKT条件/index.html">
 <meta property="og:site_name" content="Hao&#39;s Blog">
-<meta property="og:description" content="Chapter 9 混合模型和EM 第九章的前面几节介绍了k-means, k-medoids, 混合高斯模型(GMM)等算法，并以GMM为例子介绍了EM算法 本节主要记录EM算法的理解">
+<meta property="og:description" content="拉格朗日对偶与KKT条件 优化问题 \[ \begin{align} \text{minimize }&amp;amp; f_0(x) \\ \text{subject to }&amp;amp;f_i(x) \le 0, i=1:m\\ &amp;amp; h_i(x) = 0, i=1:p \end{align}\\ D_{f} = \bigcap_{i=0}^m\text{dom}f_i\cap \bigcap_{">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/Fo5Sl_9_Sr_DBVgLtyBwoO-KN_HP">
-<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/FvEtu31wiJE6DyIUm_SVXKE-OcMG">
-<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/FnhfNscWFrVAXtXi5bO6ZXFdn-vi">
-<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/FsazslSi6kGEECRF7RfZWHvup-Bl">
-<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/FmRkxyPFvvHn1LQKQgRiJU9uklbF">
-<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/FtxAjDnPgHiBox6_NyzxUzx0pZTN">
-<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/Fpe888H5plvT2tzULpCjXOKE-PtR">
-<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/Fv1aaAe_UgjqwJXb3KZ9m4wI2ItW">
-<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/FrJCBPqSvyC73CBZH3fL8BRZ4s20">
-<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/FkqufRKDzSEWs94QGjH8h_jbm1t8">
-<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/FuTkxRWwrql9btnCVOwer_DhLzsz">
-<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/FsazslSi6kGEECRF7RfZWHvup-Bl">
-<meta property="og:updated_time" content="2017-09-01T14:27:36.000Z">
+<meta property="og:image" content="http://o6z0iouhm.bkt.clouddn.com/Fl9fG9zOkScAFT8eumnN4KB8WQTh">
+<meta property="og:updated_time" content="2017-09-25T15:08:18.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PRML读书笔记(二)">
-<meta name="twitter:description" content="Chapter 9 混合模型和EM 第九章的前面几节介绍了k-means, k-medoids, 混合高斯模型(GMM)等算法，并以GMM为例子介绍了EM算法 本节主要记录EM算法的理解">
-<meta name="twitter:image" content="http://o6z0iouhm.bkt.clouddn.com/Fo5Sl_9_Sr_DBVgLtyBwoO-KN_HP">
+<meta name="twitter:title" content="凸优化系列 (二)">
+<meta name="twitter:description" content="拉格朗日对偶与KKT条件 优化问题 \[ \begin{align} \text{minimize }&amp;amp; f_0(x) \\ \text{subject to }&amp;amp;f_i(x) \le 0, i=1:m\\ &amp;amp; h_i(x) = 0, i=1:p \end{align}\\ D_{f} = \bigcap_{i=0}^m\text{dom}f_i\cap \bigcap_{">
+<meta name="twitter:image" content="http://o6z0iouhm.bkt.clouddn.com/Fl9fG9zOkScAFT8eumnN4KB8WQTh">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -71,7 +60,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>PRML读书笔记(二) | Hao&#39;s Blog</title>
+<title>凸优化系列 (二) | Hao&#39;s Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -267,11 +256,11 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap"><article id="post-PRML-EM" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-拉格朗日与KKT条件" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/09/01/PRML-EM/" class="article-date">
-      <time datetime="2017-09-01T02:59:47.000Z" itemprop="datePublished">2017-09-01</time>
+      <a href="/2017/09/25/拉格朗日与KKT条件/" class="article-date">
+      <time datetime="2017-09-25T15:03:20.000Z" itemprop="datePublished">2017-09-25</time>
 </a>
 
 
@@ -286,7 +275,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      PRML读书笔记(二)
+      凸优化系列 (二)
     </h1>
   
 
@@ -295,13 +284,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+    <a class="article-category-link" href="/categories/Math/">Math</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PRML/">PRML</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Optimization/">Optimization</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -311,61 +300,92 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h1 id="chapter-9-混合模型和em">Chapter 9 混合模型和EM</h1>
-<p>第九章的前面几节介绍了k-means, k-medoids, 混合高斯模型(GMM)等算法，并以GMM为例子介绍了EM算法</p>
-<p>本节主要记录EM算法的理解</p>
-<a id="more"></a>
-<h2 id="em-的一种观点">EM 的一种观点</h2>
-<p>引入辅助隐变量<span class="math inline">\(Z\)</span>, 对数似然函数变为</p>
-<p><img src="http://o6z0iouhm.bkt.clouddn.com/Fo5Sl_9_Sr_DBVgLtyBwoO-KN_HP" width="40%"></p>
-<p>实际情况下没有完整数据集<span class="math inline">\(\{X, Z\}\)</span>, 只有<span class="math inline">\(X\)</span>, 因此<span class="math inline">\(Z\)</span>的取值只来自于后验概率分布 <span class="math inline">\(lnp\{Z|X,\theta\}\)</span></p>
-<p>当后验估计得到<span class="math inline">\(Z\)</span>之后，根据完整数据集<span class="math inline">\(\{X, Z\}\)</span>推断对数似然函数是很容易的。</p>
-<p>EM的步骤如下：</p>
-<p><img src="http://o6z0iouhm.bkt.clouddn.com/FvEtu31wiJE6DyIUm_SVXKE-OcMG" width="80%"></p>
-<p>以上的M步骤做的是Maximum Likelihood Estimation(MLE), 如果优化目标加上参数的先验分布<span class="math inline">\(p(\theta)\)</span>, 则变成了Maximum posterior probability (MAP), 可以避免病态解</p>
-<h3 id="gmm-例子">GMM 例子</h3>
-<p>GMM的EM步骤如下</p>
-<p><img src="http://o6z0iouhm.bkt.clouddn.com/FnhfNscWFrVAXtXi5bO6ZXFdn-vi" width="80%"></p>
-<p>其中<span class="math inline">\(\gamma\)</span>就是关键的隐变量，表示每个点属于各个高斯模型的概率分布</p>
-<p>让我们重新考察高斯混合模型</p>
-<h4 id="m步骤">M步骤</h4>
-<p>GMM中完整的数据集的似然函数为</p>
-<p><img src="http://o6z0iouhm.bkt.clouddn.com/FsazslSi6kGEECRF7RfZWHvup-Bl" width="50%"></p>
-<p>对应的对数似然函数为</p>
-<p><img src="http://o6z0iouhm.bkt.clouddn.com/FmRkxyPFvvHn1LQKQgRiJU9uklbF" width="60%"></p>
-<p>可以据此方便地求出模型参数<span class="math inline">\(\mu, \Sigma, \pi\)</span></p>
-<h4 id="e步骤">E步骤</h4>
-<p>隐变量<span class="math inline">\(Z\)</span>的后验概率分布为</p>
-<p><img src="http://o6z0iouhm.bkt.clouddn.com/FtxAjDnPgHiBox6_NyzxUzx0pZTN" width="50%"></p>
-<p>从而得到</p>
-<p><img src="http://o6z0iouhm.bkt.clouddn.com/Fpe888H5plvT2tzULpCjXOKE-PtR" width="50%"></p>
-<h3 id="伯努利分布的混合">伯努利分布的混合</h3>
-<p>模型也被称为潜在类别分析 (latent class analysis)</p>
-<p>类似，自己试着推导</p>
-<h2 id="一般形式的em算法">一般形式的EM算法</h2>
-<p><img src="http://o6z0iouhm.bkt.clouddn.com/Fv1aaAe_UgjqwJXb3KZ9m4wI2ItW" width="45%"></p>
-<p><span class="math inline">\(\mathcal{L}(q, \theta)\)</span>是<span class="math inline">\(ln\ p(X|\theta)\)</span>的一个下界，称作 Evidence Lower Bound (ELOB) [1]</p>
-<p>我们可以使用该公式来定义EM算法，证明它确实最大化了对数似然函数</p>
-<h4 id="e-步骤">E 步骤</h4>
-<p>当<span class="math inline">\(\theta\)</span>给定为<span class="math inline">\(\theta^{old}\)</span>时，优化<span class="math inline">\(q = p, s.t. KL(q||p) = 0\)</span>,也就是令<span class="math inline">\(Z\)</span>的近似分布为后验概率分布<span class="math inline">\(p(Z|X,\theta)\)</span></p>
-<p>则在<span class="math inline">\(\theta^{old}\)</span>点， <span class="math inline">\(\mathcal{L}(q, \theta)\)</span>逼近<span class="math inline">\(ln\ p(X|\theta)\)</span></p>
-<p><img src="http://o6z0iouhm.bkt.clouddn.com/FrJCBPqSvyC73CBZH3fL8BRZ4s20" width="50%"></p>
-<h4 id="m-步骤">M 步骤</h4>
-<p>分布<span class="math inline">\(q(Z)\)</span>固定，对下界 <span class="math inline">\(\mathcal{L}(q, \theta)\)</span>对参数<span class="math inline">\(\theta\)</span>最大化，得到<span class="math inline">\(\theta^{new}\)</span></p>
-<p><span class="math inline">\(L(q, \theta) = Q(\theta, \theta^{old}) + H(q)\)</span>, 即这里优化的<span class="math inline">\(L\)</span>与前面的<span class="math inline">\(Q\)</span>在<span class="math inline">\(q\)</span>给定下只差了一个常数项<span class="math inline">\(H(q)\)</span></p>
-<p><img src="http://o6z0iouhm.bkt.clouddn.com/FkqufRKDzSEWs94QGjH8h_jbm1t8" width="50%"></p>
-<p>整个EM过程如图</p>
-<p><img src="http://o6z0iouhm.bkt.clouddn.com/FuTkxRWwrql9btnCVOwer_DhLzsz" width="50%"></p>
-<h2 id="我的理解">我的理解</h2>
-<p>用矩阵的形式理解多维概率 (画个图？)，EM的本质是在待优化变量中引入隐变量，相当于2个变量。 观测数据X是固定的，在“二维空间”<span class="math inline">\((Z, \theta)\)</span>中搜索最优值。EM的两个步骤相当于固定一个优化另一个，有点类似于坐标轴轮换的梯度下降(坐标上升法)，只要问题是凸的，就可以收敛到最优点，当然不是凸的情况下可能收敛到maximal 注意理解，无论哪个优化式子都是这个联合分布，只是哪个看作是已知的，如果<span class="math inline">\(\theta\)</span>看作是已知，那么已经归一化了。而其它的看看作是已知的可能需要归一化，但是点估计的话，不用归一化系数也可以</p>
-<p><img src="http://o6z0iouhm.bkt.clouddn.com/FsazslSi6kGEECRF7RfZWHvup-Bl" width="50%"></p>
-<h2 id="gem">GEM</h2>
-<p>对于复杂的模型来说，E步骤或者M步骤仍然无法计算。推广EM算法(generalized EM algorithm)解决的是E, M步骤无法计算的问题。本质上就是原先E, M每次优化都是求最优的解，而GEM迭代地优化，每次只去找到一个可以优化目标的点。</p>
-<p>一种使用GEM的方法是在M步骤中使用某种非线性最优化策略，例如共轭梯度算法。 另一种形式的GEM算法，被称为期望条件最大化算 法(expectation conditional maximization algorithm)，或者简称ECM算法，涉及到在每个M步骤 中进行若干了具有限制条件的最优化</p>
-<p>这样做可以增量迭代求解，类似于梯度下降这类算法，每步的计算量小，但是速度快，迭代收敛(因为收敛性没变，每次都能保证比上一次优)</p>
+        <h2 id="拉格朗日对偶与kkt条件">拉格朗日对偶与KKT条件</h2>
+<h3 id="优化问题">优化问题</h3>
+<p><span class="math display">\[
+\begin{align}
+\text{minimize }&amp; f_0(x) \\
+\text{subject to }&amp;f_i(x) \le 0, i=1:m\\
+&amp; h_i(x) = 0, i=1:p
+\end{align}\\
+D_{f} = \bigcap_{i=0}^m\text{dom}f_i\cap \bigcap_{i=0}^m\text{dom}h_i
+\]</span></p>
+<h3 id="拉格朗日表达式">拉格朗日表达式</h3>
+<p><span class="math display">\[
+L(x, \lambda, v) = f_0(x) + \sum_{i=1}^m\lambda_if_i(x) + \sum_{i=1}^pv_ih(i)\\
+\text{dom }L = D \times R^m \times R^p\\
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+\text{For any } &amp;\lambda\succeq 0,\forall \tilde x \in D\\
+L(\tilde x, \lambda, v)  &amp;= f_0(\tilde  x) + \sum_{i=1}^m\lambda_if_i(\tilde x) + \sum_{i=1}^pv_ih_i(\tilde x)\\
+&amp;\le f_0(\tilde x)
+\end{align}
+\]</span></p>
+<h3 id="对偶方程">对偶方程</h3>
+<p><span class="math display">\[
+\begin{align}
+g(\lambda, v)&amp; = \inf_{x\in D} L(x, \lambda, v) \\
+&amp;= \inf_{x\in D}[f_0(x)+\sum_i\lambda_if_i(x)+\sum_iv_ih_i(x))]
+\end{align}
+\]</span></p>
+<p><span class="math inline">\(g(\lambda, v)\)</span>是concave的，假设原来优化问题的最优值为 <span class="math inline">\(p^*\)</span>，则对于任意<span class="math inline">\(\lambda \succeq 0, g(\lambda, v) \le p^*\)</span></p>
+<p>那么对偶问题描述为 <span class="math display">\[
+\text{maximize } g(\lambda, v)\\
+\text{subject to } \lambda \ge 0
+\]</span> 假设对偶问题的最优值为<span class="math inline">\(d^*\)</span>，那么弱对偶条件<span class="math inline">\(d^* \le p^*\)</span>总是成立，无论原优化问题是否为凸 而当原问题是凸时，一般情况下强对偶条件<span class="math inline">\(d^* = p^*\)</span> 成立 也就是对偶问题至少可以求得原问题的一个下界，而这个 <span class="math inline">\(\text{gap} = p^* - d^*\)</span> 当问题是凸时为0，即凸问题的解与对偶问题的解相同</p>
+<h3 id="kkt-条件">KKT 条件</h3>
+<p>记<span class="math inline">\(x^*, (\lambda^*, v^*)\)</span> 为各自问题的最优点，在强对偶条件成立（不论原问题是否为凸）的情况下</p>
+<p>KKT条件成立（必要条件） <span class="math display">\[
+f_i(x^*) \le 0, i=1:m\\
+h_i(x^*) = 0, i=1:p\\
+\lambda_i^* \ge 0, i=1:m\\
+\lambda^*_if_i(x^*) = 0, i=1:m\\
+\nabla f_0(x^*)+\sum_{i=1}^{m}\lambda^*_i\nabla f_i(x^*)+\sum_{i=1}^pv^*_i\nabla h_i(x^*)=\mathbf{0}
+\]</span> 即<span class="math inline">\(f_0\)</span>的梯度是<span class="math inline">\(f_i和h_i\)</span>的线性组合</p>
+<p><span class="math inline">\(F(x)\)</span>表示点<span class="math inline">\(x\)</span>的所有可行方向的集合，<span class="math inline">\(x\)</span>的可行方向是指<span class="math inline">\(x\)</span>加上一个高阶小量仍然在可行域<span class="math inline">\(D_f\)</span> 中</p>
+<p><img width="60%" src="http://o6z0iouhm.bkt.clouddn.com/Fl9fG9zOkScAFT8eumnN4KB8WQTh"></p>
+<p>对于函数<span class="math inline">\(f\)</span>在<span class="math inline">\(x\)</span>点的梯度方向可以将空间分成三部分，梯度分量为正的<span class="math inline">\(N_f^+\)</span>，梯度分量为负的<span class="math inline">\(N_f^-\)</span>，梯度分量为0的<span class="math inline">\(T_f\)</span></p>
+<p>各个约束的可行方向总结如下</p>
+<table>
+<thead>
+<tr class="header">
+<th>约束</th>
+<th><span class="math inline">\(f_i(x) \le 0\)</span></th>
+<th><span class="math inline">\(f_i(x) \le 0\)</span></th>
+<th><span class="math inline">\(h_i(x) = 0\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>满足条件</td>
+<td><span class="math inline">\(f_i(x) \lt 0\)</span></td>
+<td><span class="math inline">\(f_i(x) = 0\)</span></td>
+<td><span class="math inline">\(h_i(x) = 0\)</span></td>
+</tr>
+<tr class="even">
+<td>可行方向</td>
+<td><span class="math inline">\(\mathbb{R^n}\)</span></td>
+<td><span class="math inline">\(T_{f_i}\cup N_{f_i}^-\)</span></td>
+<td><span class="math inline">\(T_{h_i}\)</span></td>
+</tr>
+<tr class="odd">
+<td>可行方向的补</td>
+<td>0</td>
+<td><span class="math inline">\(N_{f_i}^+\)</span></td>
+<td><span class="math inline">\(N_{h_i}=N_{h_i}^+\cup N_{h_i}^-\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(x^*\)</span>是极值点，让目标函数减小的方向不能在<span class="math inline">\(F(x^*)\)</span> 中，因此<span class="math inline">\(-\nabla f(x^*) \bot F(x^*)\)</span></p>
+<p><span class="math display">\[
+F(x^*) = \left( \cap_iT_{h_i} \right)\cap\left( \cap_i (T_{f_i} \cup N_{f_i}^-) \right)\cap\left( \cap_k R^n \right)\\
+-\nabla f \subset R^n-F(x^*)=\left( \cup_i N_{h_i} \right)\cup\left( \cup_i N_{f_i}^+ \right)
+\]</span> 上式即证明了<span class="math inline">\(f_0\)</span>的梯度是<span class="math inline">\(f_i和h_i\)</span>的线性组合</p>
+<h2 id="参考资料">参考资料</h2>
 <blockquote>
-<p>参考资料</p>
-<p>[1] http://www-staff.it.uts.edu.au/~ydxu/ml_course/variational.pdf</p>
+<p><a href="https://www.zhihu.com/question/23311674" target="_blank" rel="external">zhihu: 非线性优化中的KKT条件该如何理解？</a></p>
+<p><em>Convex Optimization</em> Boyd.</p>
 </blockquote>
 
       
@@ -375,13 +395,13 @@
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2017/09/01/PRML-EM/">PRML读书笔记(二)</a></p>
+        <p><span>Title:</span><a href="/2017/09/25/拉格朗日与KKT条件/">凸优化系列 (二)</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage">Hao</a></p>
-        <p><span>Created:</span>2017-09-01, 10:59:47</p>
-        <p><span>Updated:</span>2017-09-01, 22:27:36</p>
+        <p><span>Created:</span>2017-09-25, 23:03:20</p>
+        <p><span>Updated:</span>2017-09-25, 23:08:18</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2017/09/01/PRML-EM/" title="PRML读书笔记(二)">http://escse.github.io/2017/09/01/PRML-EM/</a>
-            <span class="copy-path" data-clipboard-text="From http://escse.github.io/2017/09/01/PRML-EM/　　By Hao" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2017/09/25/拉格朗日与KKT条件/" title="凸优化系列 (二)">http://escse.github.io/2017/09/25/拉格朗日与KKT条件/</a>
+            <span class="copy-path" data-clipboard-text="From http://escse.github.io/2017/09/25/拉格朗日与KKT条件/　　By Hao" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -393,16 +413,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/09/25/拉格朗日与KKT条件/">
-                    凸优化系列 (二)
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/29/PRML-BayesianBasis/">
-                    PRML读书笔记(一)
+                <a href="/2017/09/01/PRML-EM/">
+                    PRML读书笔记(二)
                 </a>
             </div>
         
@@ -414,7 +428,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#chapter-9-混合模型和em"><span class="toc-number">1.</span> <span class="toc-text">Chapter 9 混合模型和EM</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#em-的一种观点"><span class="toc-number">1.1.</span> <span class="toc-text">EM 的一种观点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#gmm-例子"><span class="toc-number">1.1.1.</span> <span class="toc-text">GMM 例子</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#m步骤"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">M步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#e步骤"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">E步骤</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#伯努利分布的混合"><span class="toc-number">1.1.2.</span> <span class="toc-text">伯努利分布的混合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一般形式的em算法"><span class="toc-number">1.2.</span> <span class="toc-text">一般形式的EM算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#e-步骤"><span class="toc-number">1.2.0.1.</span> <span class="toc-text">E 步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#m-步骤"><span class="toc-number">1.2.0.2.</span> <span class="toc-text">M 步骤</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#我的理解"><span class="toc-number">1.3.</span> <span class="toc-text">我的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gem"><span class="toc-number">1.4.</span> <span class="toc-text">GEM</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#拉格朗日对偶与kkt条件"><span class="toc-number">1.</span> <span class="toc-text">拉格朗日对偶与KKT条件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#优化问题"><span class="toc-number">1.1.</span> <span class="toc-text">优化问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#拉格朗日表达式"><span class="toc-number">1.2.</span> <span class="toc-text">拉格朗日表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对偶方程"><span class="toc-number">1.3.</span> <span class="toc-text">对偶方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#kkt-条件"><span class="toc-number">1.4.</span> <span class="toc-text">KKT 条件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">2.</span> <span class="toc-text">参考资料</span></a></li></ol>
         
     </div>
     <style>
@@ -450,7 +464,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"PRML读书笔记(二)　| Hao's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"凸优化系列 (二)　| Hao's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -470,15 +484,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/09/25/拉格朗日与KKT条件/" title="Pre: 凸优化系列 (二)">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/29/PRML-BayesianBasis/" title="Next: PRML读书笔记(一)">
+            <a href="/2017/09/01/PRML-EM/" title="Next: PRML读书笔记(二)">
                 <i class="fa fa-angle-right"></i>
             </a>
         
