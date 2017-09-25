@@ -288,7 +288,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h2 id="拉格朗日对偶与kkt条件">拉格朗日对偶与KKT条件</h2>
+              <h2 id="拉格朗日对偶与kkt条件">拉格朗日对偶与KKT条件</h2>
 <h3 id="优化问题">优化问题</h3>
 <p><span class="math display">\[
 \begin{align}
@@ -298,84 +298,7 @@
 \end{align}\\
 D_{f} = \bigcap_{i=0}^m\text{dom}f_i\cap \bigcap_{i=0}^m\text{dom}h_i
 \]</span></p>
-<h3 id="拉格朗日表达式">拉格朗日表达式</h3>
-<p><span class="math display">\[
-L(x, \lambda, v) = f_0(x) + \sum_{i=1}^m\lambda_if_i(x) + \sum_{i=1}^pv_ih(i)\\
-\text{dom }L = D \times R^m \times R^p\\
-\]</span></p>
-<p><span class="math display">\[
-\begin{align}
-\text{For any } &amp;\lambda\succeq 0,\forall \tilde x \in D\\
-L(\tilde x, \lambda, v)  &amp;= f_0(\tilde  x) + \sum_{i=1}^m\lambda_if_i(\tilde x) + \sum_{i=1}^pv_ih_i(\tilde x)\\
-&amp;\le f_0(\tilde x)
-\end{align}
-\]</span></p>
-<h3 id="对偶方程">对偶方程</h3>
-<p><span class="math display">\[
-\begin{align}
-g(\lambda, v)&amp; = \inf_{x\in D} L(x, \lambda, v) \\
-&amp;= \inf_{x\in D}[f_0(x)+\sum_i\lambda_if_i(x)+\sum_iv_ih_i(x))]
-\end{align}
-\]</span></p>
-<p><span class="math inline">\(g(\lambda, v)\)</span>是concave的，假设原来优化问题的最优值为 <span class="math inline">\(p^*\)</span>，则对于任意<span class="math inline">\(\lambda \succeq 0, g(\lambda, v) \le p^*\)</span></p>
-<p>那么对偶问题描述为 <span class="math display">\[
-\text{maximize } g(\lambda, v)\\
-\text{subject to } \lambda \ge 0
-\]</span> 假设对偶问题的最优值为<span class="math inline">\(d^*\)</span>，那么弱对偶条件<span class="math inline">\(d^* \le p^*\)</span>总是成立，无论原优化问题是否为凸 而当原问题是凸时，一般情况下强对偶条件<span class="math inline">\(d^* = p^*\)</span> 成立 也就是对偶问题至少可以求得原问题的一个下界，而这个 <span class="math inline">\(\text{gap} = p^* - d^*\)</span> 当问题是凸时为0，即凸问题的解与对偶问题的解相同</p>
-<h3 id="kkt-条件">KKT 条件</h3>
-<p>记<span class="math inline">\(x^*, (\lambda^*, v^*)\)</span> 为各自问题的最优点，在强对偶条件成立（不论原问题是否为凸）的情况下</p>
-<p>KKT条件成立（必要条件） <span class="math display">\[
-f_i(x^*) \le 0, i=1:m\\
-h_i(x^*) = 0, i=1:p\\
-\lambda_i^* \ge 0, i=1:m\\
-\lambda^*_if_i(x^*) = 0, i=1:m\\
-\nabla f_0(x^*)+\sum_{i=1}^{m}\lambda^*_i\nabla f_i(x^*)+\sum_{i=1}^pv^*_i\nabla h_i(x^*)=\mathbf{0}
-\]</span> 即<span class="math inline">\(f_0\)</span>的梯度是<span class="math inline">\(f_i和h_i\)</span>的线性组合</p>
-<p><span class="math inline">\(F(x)\)</span>表示点<span class="math inline">\(x\)</span>的所有可行方向的集合，<span class="math inline">\(x\)</span>的可行方向是指<span class="math inline">\(x\)</span>加上一个高阶小量仍然在可行域<span class="math inline">\(D_f\)</span> 中</p>
-<p><img width="60%" src="http://o6z0iouhm.bkt.clouddn.com/Fl9fG9zOkScAFT8eumnN4KB8WQTh"></p>
-<p>对于函数<span class="math inline">\(f\)</span>在<span class="math inline">\(x\)</span>点的梯度方向可以将空间分成三部分，梯度分量为正的<span class="math inline">\(N_f^+\)</span>，梯度分量为负的<span class="math inline">\(N_f^-\)</span>，梯度分量为0的<span class="math inline">\(T_f\)</span></p>
-<p>各个约束的可行方向总结如下</p>
-<table>
-<thead>
-<tr class="header">
-<th>约束</th>
-<th><span class="math inline">\(f_i(x) \le 0\)</span></th>
-<th><span class="math inline">\(f_i(x) \le 0\)</span></th>
-<th><span class="math inline">\(h_i(x) = 0\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>满足条件</td>
-<td><span class="math inline">\(f_i(x) \lt 0\)</span></td>
-<td><span class="math inline">\(f_i(x) = 0\)</span></td>
-<td><span class="math inline">\(h_i(x) = 0\)</span></td>
-</tr>
-<tr class="even">
-<td>可行方向</td>
-<td><span class="math inline">\(\mathbb{R^n}\)</span></td>
-<td><span class="math inline">\(T_{f_i}\cup N_{f_i}^-\)</span></td>
-<td><span class="math inline">\(T_{h_i}\)</span></td>
-</tr>
-<tr class="odd">
-<td>可行方向的补</td>
-<td>0</td>
-<td><span class="math inline">\(N_{f_i}^+\)</span></td>
-<td><span class="math inline">\(N_{h_i}=N_{h_i}^+\cup N_{h_i}^-\)</span></td>
-</tr>
-</tbody>
-</table>
-<p><span class="math inline">\(x^*\)</span>是极值点，让目标函数减小的方向不能在<span class="math inline">\(F(x^*)\)</span> 中，因此<span class="math inline">\(-\nabla f(x^*) \bot F(x^*)\)</span></p>
-<p><span class="math display">\[
-F(x^*) = \left( \cap_iT_{h_i} \right)\cap\left( \cap_i (T_{f_i} \cup N_{f_i}^-) \right)\cap\left( \cap_k R^n \right)\\
--\nabla f \subset R^n-F(x^*)=\left( \cup_i N_{h_i} \right)\cup\left( \cup_i N_{f_i}^+ \right)
-\]</span> 上式即证明了<span class="math inline">\(f_0\)</span>的梯度是<span class="math inline">\(f_i和h_i\)</span>的线性组合</p>
-<h2 id="参考资料">参考资料</h2>
-<blockquote>
-<p><a href="https://www.zhihu.com/question/23311674" target="_blank" rel="external">zhihu: 非线性优化中的KKT条件该如何理解？</a></p>
-<p><em>Convex Optimization</em> Boyd.</p>
-</blockquote>
-
+          
       
     </div>
     
@@ -392,6 +315,10 @@ F(x^*) = \left( \cap_iT_{h_i} \right)\cap\left( \cap_i (T_{f_i} \cup N_{f_i}^-) 
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Optimization/">Optimization</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2017/09/25/拉格朗日与KKT条件/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
