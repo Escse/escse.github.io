@@ -16,8 +16,9 @@
 
 
 <meta name="description" content="马尔可夫决策 MDP 马尔可夫过程可以用一个五元数\((S, A, P(\cdot,\cdot), R(\cdot,\cdot), \gamma)\)  S 是一组有限的状态集 A 是一组有限的动作集 \(P_a(s,s′)=Pr(s_{t+1}=s′|s_t=s,a_t=a)\) 表示在时间 t 状态 s 采取动作 a 可以在时间 t+1 转换到状态 s′ 概率 \(R_a(s,s′)\) 表示">
+<meta name="keywords" content="Machine Learning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hao&#39;s Blog">
+<meta property="og:title" content="强化学习相关">
 <meta property="og:url" content="http://escse.github.io/2018/05/31/Bandit/index.html">
 <meta property="og:site_name" content="Hao&#39;s Blog">
 <meta property="og:description" content="马尔可夫决策 MDP 马尔可夫过程可以用一个五元数\((S, A, P(\cdot,\cdot), R(\cdot,\cdot), \gamma)\)  S 是一组有限的状态集 A 是一组有限的动作集 \(P_a(s,s′)=Pr(s_{t+1}=s′|s_t=s,a_t=a)\) 表示在时间 t 状态 s 采取动作 a 可以在时间 t+1 转换到状态 s′ 概率 \(R_a(s,s′)\) 表示">
@@ -30,9 +31,9 @@
 <meta property="og:image" content="http://escse.github.io/img/image-20180530223522755.png">
 <meta property="og:image" content="http://escse.github.io/img/image-20180530234608754.png">
 <meta property="og:image" content="https://pic4.zhimg.com/50/v2-c09a0be48e3fc11f370e9593362373a0_hd.gif">
-<meta property="og:updated_time" content="2018-05-31T05:04:01.000Z">
+<meta property="og:updated_time" content="2018-05-31T05:07:12.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hao&#39;s Blog">
+<meta name="twitter:title" content="强化学习相关">
 <meta name="twitter:description" content="马尔可夫决策 MDP 马尔可夫过程可以用一个五元数\((S, A, P(\cdot,\cdot), R(\cdot,\cdot), \gamma)\)  S 是一组有限的状态集 A 是一组有限的动作集 \(P_a(s,s′)=Pr(s_{t+1}=s′|s_t=s,a_t=a)\) 表示在时间 t 状态 s 采取动作 a 可以在时间 t+1 转换到状态 s′ 概率 \(R_a(s,s′)\) 表示">
 <meta name="twitter:image" content="http://escse.github.io/img/image-20180530134528043.png">
 
@@ -66,7 +67,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Hao&#39;s Blog</title>
+<title>强化学习相关 | Hao&#39;s Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -191,7 +192,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dimensionality-Reduction/">Dimensionality Reduction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ME/">ME</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Matrix/">Matrix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optimization/">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Probability/">Probability</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dimensionality-Reduction/">Dimensionality Reduction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ME/">ME</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Machine-Learning/">Machine Learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Matrix/">Matrix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optimization/">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Probability/">Probability</a></li></ul>
                     </div>
                 </section>
                 
@@ -266,7 +267,7 @@
   
     <div class="article-meta">
       <a href="/2018/05/31/Bandit/" class="article-date">
-      <time datetime="2018-05-31T04:07:08.000Z" itemprop="datePublished">2018-05-31</time>
+      <time datetime="2018-05-31T05:01:20.000Z" itemprop="datePublished">2018-05-31</time>
 </a>
 
 
@@ -276,6 +277,32 @@
     
       <input type="hidden" class="isFancy" />
     
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      强化学习相关
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Math/">Math</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Machine-Learning/">Machine Learning</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
     
     <div class="article-entry" itemprop="articleBody">
       
@@ -289,6 +316,7 @@
 <li><span class="math inline">\(R_a(s,s′)\)</span> 表示通过动作 a 状态从 s 转换到 s′ 所带来的及时收益（或者是预期及时收益）</li>
 <li><span class="math inline">\(\gamma \in [0,1]\)</span> 是折扣因子(discount factor)，表示未来收益和当前收益之前的差别</li>
 </ul>
+<a id="more"></a>
 <p>目标寻找策略<span class="math inline">\(\pi(s): S \rightarrow A\)</span>最大化累计收益R(T) <span class="math display">\[
 R(T) = \sum_{t=1}^{T} \gamma^tR_{a_t}(s_t, s_{t+1})
 \]</span></p>
@@ -405,12 +433,12 @@ a_t = \arg\max_{a\in A} \mu_a + c\sigma_a/\sqrt {N_t(a)}
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2018/05/31/Bandit/"></a></p>
+        <p><span>Title:</span><a href="/2018/05/31/Bandit/">强化学习相关</a></p>
         <p><span>Author:</span><a href="/" title="Back to Homepage">Hao</a></p>
-        <p><span>Created:</span>2018-05-31, 12:07:08</p>
-        <p><span>Updated:</span>2018-05-31, 13:04:01</p>
+        <p><span>Created:</span>2018-05-31, 13:01:20</p>
+        <p><span>Updated:</span>2018-05-31, 13:07:12</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2018/05/31/Bandit/" title="">http://escse.github.io/2018/05/31/Bandit/</a>
+            <span>Full URL:</span><a class="post-url" href="/2018/05/31/Bandit/" title="强化学习相关">http://escse.github.io/2018/05/31/Bandit/</a>
             <span class="copy-path" data-clipboard-text="From http://escse.github.io/2018/05/31/Bandit/　　By Hao" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -474,7 +502,7 @@ a_t = \arg\max_{a\in A} \mu_a + c\sigma_a/\sqrt {N_t(a)}
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"　| Hao's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"强化学习相关　| Hao's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -506,7 +534,7 @@ a_t = \arg\max_{a\in A} \mu_a + c\sigma_a/\sqrt {N_t(a)}
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/05/31/Bandit/">Bandit</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/25/拉格朗日与KKT条件/">凸优化系列 (二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/01/PRML-EM/">PRML读书笔记(二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/29/PRML-BayesianBasis/">PRML读书笔记(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/16/Maximum Entropy/">Maximum Entropy Model</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/A-Brief-Summary-of-Dimensionality-Reduction/">A Brief Summary of Dimensionality Reduction</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/Quasi-Newton-Method/">Quasi Newton Method</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/27/Mahalanobis-Distance-and-PCA/">PCA and Mahalanobis Distance</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/Eigenfunction-of-A-Random-Variable/">Eigenfunction of A Random Variable</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/Convex Optimization 1/">凸优化系列 (一)</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/05/31/Bandit/">强化学习相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/25/拉格朗日与KKT条件/">凸优化系列 (二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/01/PRML-EM/">PRML读书笔记(二)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/29/PRML-BayesianBasis/">PRML读书笔记(一)</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/16/Maximum Entropy/">Maximum Entropy Model</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/11/A-Brief-Summary-of-Dimensionality-Reduction/">A Brief Summary of Dimensionality Reduction</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/04/Quasi-Newton-Method/">Quasi Newton Method</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/27/Mahalanobis-Distance-and-PCA/">PCA and Mahalanobis Distance</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/26/Eigenfunction-of-A-Random-Variable/">Eigenfunction of A Random Variable</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/Convex Optimization 1/">凸优化系列 (一)</a></li></ul>
 
 
 

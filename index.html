@@ -186,7 +186,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dimensionality-Reduction/">Dimensionality Reduction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ME/">ME</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Matrix/">Matrix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optimization/">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Probability/">Probability</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dimensionality-Reduction/">Dimensionality Reduction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ME/">ME</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Machine-Learning/">Machine Learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Matrix/">Matrix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Optimization/">Optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PRML/">PRML</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Probability/">Probability</a></li></ul>
                     </div>
                 </section>
                 
@@ -263,7 +263,7 @@
   
     <div class="article-meta">
       <a href="/2018/05/31/Bandit/" class="article-date">
-      <time datetime="2018-05-31T04:07:08.000Z" itemprop="datePublished">2018-05-31</time>
+      <time datetime="2018-05-31T05:01:20.000Z" itemprop="datePublished">2018-05-31</time>
 </a>
 
 
@@ -274,10 +274,21 @@
       <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/31/Bandit/">强化学习相关</a>
+    </h1>
+  
+
+      </header>
+      
+    
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h2 id="马尔可夫决策-mdp">马尔可夫决策 MDP</h2>
+              <h2 id="马尔可夫决策-mdp">马尔可夫决策 MDP</h2>
 <p>马尔可夫过程可以用一个五元数<span class="math inline">\((S, A, P(\cdot,\cdot), R(\cdot,\cdot), \gamma)\)</span></p>
 <ul>
 <li>S 是一组有限的状态集</li>
@@ -286,123 +297,27 @@
 <li><span class="math inline">\(R_a(s,s′)\)</span> 表示通过动作 a 状态从 s 转换到 s′ 所带来的及时收益（或者是预期及时收益）</li>
 <li><span class="math inline">\(\gamma \in [0,1]\)</span> 是折扣因子(discount factor)，表示未来收益和当前收益之前的差别</li>
 </ul>
-<p>目标寻找策略<span class="math inline">\(\pi(s): S \rightarrow A\)</span>最大化累计收益R(T) <span class="math display">\[
-R(T) = \sum_{t=1}^{T} \gamma^tR_{a_t}(s_t, s_{t+1})
-\]</span></p>
-<h3 id="bellman-equation">Bellman Equation</h3>
-<p><span class="math display">\[
-v_\pi(s) = \sum_{a \in A}\pi(a|s)(R_s^a + \gamma\sum_{s&#39;\in S}P_a(s,s&#39;)v_\pi(s&#39;)) \\
-v_\pi = R^\pi + \gamma P^\pi R^\pi \\
-v_\pi = (I -  \gamma P^\pi )^{-1}R^\pi
-\]</span></p>
-<h2 id="多臂老虎机-multi-armed-bandit">多臂老虎机 (Multi-Armed Bandit)</h2>
-<p>老虎机有一个绰号叫单臂强盗（single-armed bandit）。假设面对一排期望收益不同得老虎机，你采取什么策略来保证总收益最高？这就是经典的多臂老虎机问题。</p>
-<p>问题描述</p>
-<p><span class="math inline">\(A: \text{set of actions(arms)}\)</span></p>
-<p><span class="math inline">\(R^a(r) = P[r|a]: \text{unknown probability distribution over rewards}\)</span></p>
-<p>目标是最大化累计收益 <span class="math display">\[
-\sum_{\tau=1}^t r_\tau \\r_t \sim R^{a_t}, a_t \in A
-\]</span> 定义后悔</p>
-<p>每次action的平均收益是<span class="math inline">\(Q(a) = \mathbb{E}[r|a]\)</span>，最优值<span class="math inline">\(V^* = Q(a^*) = max_{a \in A} Q(a)\)</span></p>
-<p>regret <span class="math inline">\(l_t = \mathbb{E}[V^* - Q(a_t)]\)</span></p>
-<p>总regret <span class="math display">\[
-L_t = \mathbb{E}[\sum_{\tau =1}^tV^* -  Q(a_\tau)] \\
-= \sum_{a \in A}\mathbb{E}[N_t(a)](V^*-Q(a)) \\
-= \sum_{a \in A}\mathbb{E}[N_t(a)]\Delta_a
-\]</span></p>
-<h3 id="exploitation-exploration">Exploitation &amp; Exploration</h3>
-<p>（1）Exploitation：基于已知最好策略，开发利用已知具有较高回报的item（贪婪、短期回报）</p>
-<ol type="1">
-<li>Advantage：充分利用已知高回报item</li>
-<li>Disadvantage：陷于局部最优，错过潜在更高回报item的机会</li>
-</ol>
-<p>（2）Exploration：不考虑曾经的经验，勘探潜在可能高回报的item（非贪婪、长期回报）</p>
-<ol type="1">
-<li>Advantage：发现更好回报的item</li>
-<li>Disadvantage：充分利用已有高回报item机会减少（如已经找到最好item）</li>
-</ol>
-<p>（3）目标：要找到Exploitation &amp; Exploration的trade-off，以达到累计回报最大化</p>
-<p>一直exploit和永不exploit都是线性的regret，如何找到更优的策略</p>
-<h3 id="epsilon-greedy算法"><span class="math inline">\(\epsilon\)</span>-greedy算法</h3>
-<p>分配一定概率去explore</p>
-<figure>
-<img src="/img/image-20180530134528043.png" alt="image-20180530134528043"><figcaption>image-20180530134528043</figcaption>
-</figure>
-<p>算法特点</p>
-<ol type="1">
-<li>如果item的回报发生变化，能及时改变策略</li>
-<li>可以控制<span class="math inline">\(\epsilon\)</span>对Exploration和Exploitation的偏好程度，但是<span class="math inline">\(\epsilon\)</span>难以选择</li>
-<li>策略运行一段时间后，我们对item的好坏了解的确定性增强，但仍然花费固定的精力和随机策略去exploration</li>
-</ol>
-<p>算法改进</p>
-<ol type="1">
-<li>ε-first strategy，一开始分配部分explore</li>
-<li>ε-decreasing strategy，随着时间减小explore</li>
-<li>softmax，改变随机选择策略，分配概率</li>
-</ol>
-<h3 id="ucbupper-confidence-bound算法">UCB（Upper Confidence Bound）算法</h3>
-<figure>
-<img src="/img/image-20180530141826403.png" alt="image-20180530141826403"><figcaption>image-20180530141826403</figcaption>
-</figure>
-<p>根据以下策略选择action <span class="math display">\[
-a_t = \arg\max_{a\in A}~ \hat{Q_t}(a) + \hat{U_t}(a)
-\]</span> <img src="/img/image-20180530142200057.png" alt="image-20180530142200057"> <span class="math display">\[
-P[Q(a) &gt; \hat{Q_t}(a) + U_t(a)] \le e^{-2N_t(a)U_t(a)^2} = p
-\]</span></p>
-<h4 id="ucb1算法">UCB1算法</h4>
-<p>令<span class="math inline">\(p = t^{-c}\)</span>, e.g c = 4，<span class="math inline">\(U_t(a) = \sqrt {\frac{2\log t}{N_t(a)}}\)</span></p>
-<p><span class="math display">\[
-a_t = \arg\max_{a\in A} Q(a) + \sqrt {\frac{2\log t}{N_t(a)}}
-\]</span></p>
-<p>UCB1 算法有logarithmic 的<span class="math inline">\(L_t\)</span> 渐进</p>
-<p>其它：UCB2，LinUCB</p>
-<h4 id="bayesian-ucb">Bayesian UCB</h4>
-<p>假设高斯分布</p>
-<p><img src="/img/image-20180530144831471.png" alt="image-20180530144831471"> <span class="math display">\[
-a_t = \arg\max_{a\in A} \mu_a + c\sigma_a/\sqrt {N_t(a)}
-\]</span> 算法特点</p>
-<ol type="1">
-<li>考虑了回报均值的不确定性，让新的item更快得到尝试机会，将探索+开发融为一体</li>
-<li>不需要设置参数</li>
-<li>一开始各item选择次数都比较少，导致得到的回报波动较大，而且会尝试所有的选择</li>
-</ol>
-<h3 id="thompson-sampling">Thompson Sampling</h3>
-<figure>
-<img src="/img/image-20180530212751423.png" alt="image-20180530212751423"><figcaption>image-20180530212751423</figcaption>
-</figure>
-<p>Thompson 采样和贪心法的区别相当于频率学派和贝叶斯学派的区别</p>
-<figure>
-<img src="/img/image-20180530223522755.png" alt="image-20180530223522755"><figcaption>image-20180530223522755</figcaption>
-</figure>
-<h2 id="蒙特卡洛搜索树-mcts">蒙特卡洛搜索树 MCTS</h2>
-<p>MCTS的四个基本过程：选择、扩展、仿真、反向传播。</p>
-<figure>
-<img src="/img/image-20180530234608754.png" alt="image-20180530234608754"><figcaption>image-20180530234608754</figcaption>
-</figure>
-<figure>
-<img src="https://pic4.zhimg.com/50/v2-c09a0be48e3fc11f370e9593362373a0_hd.gif" alt="img"><figcaption>img</figcaption>
-</figure>
-<h2 id="参考资料">参考资料</h2>
-<blockquote>
-<p>老虎机：https://www.zhihu.com/question/53381093</p>
-<p>bandit算法：https://blog.csdn.net/legendavid/article/details/64439174</p>
-<p>​ http://www.cs.cmu.edu/~rsalakhu/10703/Lecture_Exploration.pdf</p>
-<p>极大极小算法：https://www.zhihu.com/question/27221568/answer/140874499</p>
-<p>MDP:https://blog.csdn.net/WangJiankun_ls/article/details/70885008</p>
-<p>​ http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching_files/MDP.pdf</p>
-<p>​ https://engineering.purdue.edu/~givan/talks/mdp-tutorial.pdf</p>
-<p>Thampson Sampling: https://web.stanford.edu/~bvr/pubs/TS_Tutorial.pdf</p>
-<p>AlphaGo: http://science.npa.farbox.com/post/alphago/gou-jian-zi-ji-de-alphago</p>
-</blockquote>
-
+          
       
     </div>
     
     <div class="article-info article-info-index">
       
       
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Math/">Math</a>
+    </div>
+
 
       
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Machine-Learning/">Machine Learning</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2018/05/31/Bandit/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
